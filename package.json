@@ -1,0 +1,56 @@
+{
+  "name": "tos-sentinel",
+  "version": "1.0.0",
+  "description": "A public-interest Terms of Service and Privacy Policy monitoring platform.",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mtdewwolf/curly-potato.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mtdewwolf/curly-potato/issues"
+  },
+  "homepage": "https://github.com/mtdewwolf/curly-potato#readme",
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.105.1",
+    "cheerio": "^1.2.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "diff": "^9.0.0",
+    "jsdom": "^29.1.0",
+    "lucide-react": "^1.12.0",
+    "next": "^16.2.4",
+    "playwright": "^1.57.0",
+    "openai": "^6.35.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "resend": "^6.12.2",
+    "tailwind-merge": "^3.5.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.4",
+    "@types/diff": "^7.0.2",
+    "@types/jsdom": "^28.0.1",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.4",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^6.0.3"
+  }
+}
