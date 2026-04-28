@@ -43,7 +43,7 @@ export default async function AdminServiceDetailPage({ params }: { params: Promi
 
       <div className="grid gap-4">
         <h2 className="text-xl font-semibold text-slate-950">Policy documents</h2>
-        {service.policy_documents?.map((document) => (
+        {(service.policy_documents as any[] | undefined)?.map((document) => (
           <div key={document.id} className="grid gap-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
             <AdminPolicyDocumentEditForm
               serviceId={service.id}
@@ -53,7 +53,6 @@ export default async function AdminServiceDetailPage({ params }: { params: Promi
                 document_type: document.document_type,
                 url: document.url,
                 scan_frequency: document.scan_frequency,
-                status: document.status,
               }}
             />
             <form action={triggerPolicyScanAction}>

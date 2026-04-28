@@ -16,7 +16,7 @@ type Props = {
 };
 
 export function AdminPolicyDocumentEditForm({ serviceId, document }: Props) {
-  const [state, action, pending] = useActionState(updatePolicyDocumentAction, {});
+  const [state, action, pending] = useActionState(updatePolicyDocumentAction, { ok: false, message: "" });
 
   return (
     <form action={action} className="grid gap-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">

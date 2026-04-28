@@ -28,6 +28,8 @@ export function hashPolicyText(text: string) {
   return crypto.createHash("sha256").update(text).digest("hex");
 }
 
+export const contentHash = hashPolicyText;
+
 export function looksLikeInvalidPolicy(text: string) {
   const lower = text.toLowerCase();
   const blockedSignals = [

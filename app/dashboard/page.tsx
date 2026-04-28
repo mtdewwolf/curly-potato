@@ -32,7 +32,7 @@ export default async function DashboardPage() {
         <section>
           <h2 className="text-xl font-semibold">Followed services</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
-            {subscriptions?.map((subscription) =>
+            {(subscriptions as any[] | null)?.map((subscription) =>
               subscription.tracked_services ? <ServiceCard key={subscription.id} service={subscription.tracked_services} /> : null
             )}
             {!subscriptions?.length ? <p className="rounded-3xl border border-dashed p-6 text-sm text-slate-600">You are not following any services yet.</p> : null}
@@ -43,7 +43,7 @@ export default async function DashboardPage() {
           <div className="rounded-3xl border bg-white p-5 shadow-sm">
             <h2 className="font-semibold">Suggestion statuses</h2>
             <div className="mt-4 space-y-3">
-              {suggestions?.map((suggestion) => (
+              {(suggestions as any[] | null)?.map((suggestion) => (
                 <div key={suggestion.id} className="rounded-2xl bg-slate-50 p-3 text-sm">
                   <div className="font-medium">{suggestion.company_name}</div>
                   <div className="text-slate-600">Status: {suggestion.status.replaceAll("_", " ")}</div>

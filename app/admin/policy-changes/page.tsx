@@ -19,7 +19,7 @@ export default async function AdminPolicyChangesPage() {
         <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-700">Admin</p>
         <h1 className="text-3xl font-bold text-slate-950">Policy change review</h1>
       </div>
-      {changes?.map((change) => {
+      {(changes as any[] | null)?.map((change) => {
         const document = Array.isArray(change.policy_documents) ? change.policy_documents[0] : change.policy_documents;
         const service = document && (Array.isArray(document.tracked_services) ? document.tracked_services[0] : document.tracked_services);
         const oldSnapshot = Array.isArray(change.old_snapshot) ? change.old_snapshot[0] : change.old_snapshot;
@@ -32,15 +32,18 @@ export default async function AdminPolicyChangesPage() {
               <p className="text-sm text-slate-500">Status: {change.status} / Risk impact: {change.risk_impact_level ?? "Unrated"}</p>
             </div>
             <div className="grid gap-3">
-              {change.policy_change_findings?.map((finding) => (
-                <EvidenceBlock key={finding.id} title={finding.title} evidence={[finding.before_text, finding.after_text].filter(Boolean) as string[]}>
+              {change.policy_change_findings?.map((finding: any) => (
+                <EvidenceBlock key={finding.id} title={finding.title}>
+                  {[finding.before_text, finding.after_text].filter(Boolean).map((evidence) => (
+                    <blockquote key={evidence} className="mb-2 rounded-xl bg-white p-3 text-xs text-slate-600">{evidence}</blockquote>
+                  ))}
                   <p>{finding.explanation}</p>
                   <p className="mt-2 text-slate-600">{finding.user_impact}</p>
                 </EvidenceBlock>
               ))}
             </div>
             <DiffViewer oldText={oldSnapshot?.cleaned_text ?? ""} newText={newSnapshot?.cleaned_text ?? ""} />
-            <AdminReviewActions changeId={change.id} summary={change.change_summary ?? ""} />
+            <AdminReviewActions changeId={change.id} defaultSummary={change.change_summary ?? ""} />
           </article>
         );
       })}

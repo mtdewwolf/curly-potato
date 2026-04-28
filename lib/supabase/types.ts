@@ -268,3 +268,7 @@ export type Database = {
     CompositeTypes: Record<string, never>;
   };
 };
+
+export type Service = Database["public"]["Tables"]["tracked_services"]["Row"];
+export type PolicyDocument = Database["public"]["Tables"]["policy_documents"]["Row"];
+export type PolicyChange = Database["public"]["Tables"]["policy_changes"]["Row"];

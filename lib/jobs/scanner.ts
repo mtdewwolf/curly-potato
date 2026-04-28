@@ -154,6 +154,9 @@ export async function scanPolicyDocument(policyDocumentId: string): Promise<Scan
 
   try {
     const fetched = await fetchPolicyText(document.url);
+    if (!fetched.ok) {
+      throw new Error(fetched.error);
+    }
     const hash = contentHash(fetched.cleanedText);
 
     const { data: latestSnapshot } = document.latest_snapshot_id
@@ -191,7 +194,7 @@ export async function scanPolicyDocument(policyDocumentId: string): Promise<Scan
           raw_html: fetched.rawHtml,
           cleaned_text: fetched.cleanedText,
           content_hash: hash,
-          detected_title: fetched.title,
+          detected_title: fetched.detectedTitle,
         },
         { onConflict: "policy_document_id,content_hash", ignoreDuplicates: false },
       )
@@ -214,18 +217,21 @@ export async function scanPolicyDocument(policyDocumentId: string): Promise<Scan
       const riskReport = await generateRiskReport({
         companyName: document.title ?? "Tracked service",
         documentType: document.document_type,
-        text: fetched.cleanedText,
+        policyText: fetched.cleanedText,
       });
-      await persistRiskReport(document, snapshot.id, riskReport);
+      if (!riskReport.ok) throw new Error(riskReport.error);
+      await persistRiskReport(document, snapshot.id, riskReport.data);
     } else {
       const diff = compactDiff(latestSnapshot.cleaned_text, fetched.cleanedText);
       const change = await analyzePolicyChange({
+        companyName: document.title ?? "Tracked service",
         documentType: document.document_type,
         oldText: latestSnapshot.cleaned_text,
         newText: fetched.cleanedText,
-        diff,
+        diffText: diff,
       });
-      policyChangeId = await persistPolicyChange(document, latestSnapshot.id, snapshot.id, change);
+      if (!change.ok) throw new Error(change.error);
+      policyChangeId = await persistPolicyChange(document, latestSnapshot.id, snapshot.id, change.data);
     }
 
     await writeScanLog({
@@ -340,7 +346,7 @@ export async function publishPolicyChange(policyChangeId: string, reviewerId: st
             to: profile.email,
             serviceName: service.name,
             documentType: document?.document_type ?? "policy",
-            riskImpact: change.risk_impact_level ?? "Unrated",
+            riskLevel: change.risk_impact_level ?? "Unrated",
             summary: editedSummary || change.change_summary || "A policy change was published.",
             reportUrl: `${process.env.APP_URL ?? "http://localhost:3000"}/services/${service.slug}/changes`,
           });

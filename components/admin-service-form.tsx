@@ -5,7 +5,7 @@ import { createServiceAction } from "@/lib/actions/admin";
 import { SERVICE_CATEGORIES, RISK_LEVELS } from "@/lib/constants";
 
 export function AdminServiceForm() {
-  const [state, action, pending] = useActionState(createServiceAction, null);
+  const [state, action, pending] = useActionState(createServiceAction, { ok: false, message: "" });
 
   return (
     <form action={action} className="grid gap-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">

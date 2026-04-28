@@ -2,14 +2,11 @@
 
 import { createSuggestion } from "@/lib/actions/user";
 import { CATEGORIES } from "@/lib/constants";
-import { useActionState } from "react";
 import { SubmitButton } from "./submit-button";
 
 export function SuggestionForm() {
-  const [state, action] = useActionState(createSuggestion, {});
-
   return (
-    <form action={action} className="grid gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <form action={createSuggestion} className="grid gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
       <div>
         <label className="text-sm font-semibold">Company name *</label>
         <input name="company_name" required className="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3" />
@@ -47,8 +44,6 @@ export function SuggestionForm() {
         <label className="text-sm font-semibold">Notes</label>
         <textarea name="notes" rows={3} className="mt-1 w-full rounded-2xl border border-slate-200 px-4 py-3" />
       </div>
-      {state.error ? <p className="rounded-2xl bg-red-50 p-3 text-sm text-red-700">{state.error}</p> : null}
-      {state.success ? <p className="rounded-2xl bg-emerald-50 p-3 text-sm text-emerald-700">Suggestion submitted for review.</p> : null}
       <SubmitButton>Submit suggestion</SubmitButton>
     </form>
   );

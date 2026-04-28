@@ -22,7 +22,7 @@ export function PolicyChangeCard({
             {change.change_summary ?? "Policy update pending summary"}
           </h3>
         </div>
-        <SeverityBadge level={change.risk_impact_level} />
+        <SeverityBadge severity={change.risk_impact_level} />
       </div>
       <p className="mt-4 text-sm text-slate-600">Status: {change.status.replaceAll("_", " ")}</p>
       <Link className="mt-4 inline-flex text-sm font-semibold text-blue-700" href={`/reports/${change.id}`}>

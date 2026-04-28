@@ -2,20 +2,21 @@ import { redirect } from "next/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "@/lib/supabase/types";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 export type UserRole = "user" | "reviewer" | "admin";
 
-export async function getCurrentProfile(supabase = createServerSupabaseClient()) {
+export async function getCurrentProfile(supabase?: SupabaseClient<any>) {
+  const client = supabase ?? (await createClient());
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await client.auth.getUser();
 
   if (!user) {
     return { user: null, profile: null };
   }
 
-  const { data: profile } = await supabase
+  const { data: profile } = await client
     .from("profiles")
     .select("*")
     .eq("id", user.id)
@@ -24,8 +25,10 @@ export async function getCurrentProfile(supabase = createServerSupabaseClient())
   return { user, profile };
 }
 
+export const getCurrentUser = getCurrentProfile;
+
 export async function requireUser() {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createClient();
   const { user, profile } = await getCurrentProfile(supabase);
   if (!user) {
     redirect("/login");
@@ -48,6 +51,14 @@ export async function requireAdmin() {
     redirect("/dashboard");
   }
   return session;
+}
+
+export async function requireRole(roles: UserRole[]) {
+  const session = await requireUser();
+  if (!session.profile || !roles.includes(session.profile.role)) {
+    redirect("/dashboard");
+  }
+  return session.profile;
 }
 
 export async function isSubscribed(

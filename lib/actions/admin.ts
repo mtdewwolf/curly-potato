@@ -10,7 +10,7 @@ import { scanDuePolicies, scanPolicyDocument } from "@/lib/jobs/scanner";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createSlug } from "@/lib/utils";
 
-export type ActionState = { ok?: boolean; message?: string };
+export type ActionState = { ok?: boolean; message?: string } | null;
 
 const serviceSchema = z.object({
   name: z.string().min(2),

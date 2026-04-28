@@ -1,4 +1,4 @@
-export const fullRiskReportPrompt = `You are a Terms of Service and Privacy Policy threat assessment analyst specializing in data security, privacy exposure, user rights, AI training risk, vendor risk, and legal control risk.
+export const FULL_RISK_REPORT_PROMPT = `You are a Terms of Service and Privacy Policy threat assessment analyst specializing in data security, privacy exposure, user rights, AI training risk, vendor risk, and legal control risk.
 
 Analyze the provided policy document.
 
@@ -93,4 +93,47 @@ Important:
 - Keep evidence excerpts short but specific.
 
 Output valid JSON only using the provided schema.`;
+
+export function buildFullRiskReportPrompt(input: { companyName: string; documentType: string; policyText: string }) {
+  return `${FULL_RISK_REPORT_PROMPT}
+
+Company: ${input.companyName}
+Document type: ${input.documentType}
+
+POLICY DOCUMENT:
+${input.policyText}`;
+}
+
+export function changeAnalysisPrompt(input: {
+  companyName: string;
+  documentType: string;
+  oldText: string;
+  newText: string;
+  diffText: string;
+}) {
+  return `${policyChangePrompt}
+
+Company: ${input.companyName}
+Document type: ${input.documentType}
+
+DIFF:
+${input.diffText}
+
+OLD VERSION:
+${input.oldText}
+
+NEW VERSION:
+${input.newText}`;
+}
+
+export function repairJsonPrompt(raw: string, validationError: string) {
+  return `Repair this AI response so it is valid JSON matching the requested schema. Return JSON only.
+
+Validation error:
+${validationError}
+
+Raw response:
+${raw}`;
+}
+
 

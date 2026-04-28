@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { CheckCircle, EyeOff, XCircle } from "lucide-react";
 
-import { publishPolicyChange, reviewPolicyChange } from "@/lib/actions/admin";
+import { reviewPolicyChangeAction } from "@/lib/actions/admin";
 
 type Props = {
   changeId: string;
@@ -19,14 +19,12 @@ export function AdminReviewActions({ changeId, defaultSummary }: Props) {
       <form
         action={(formData) =>
           startTransition(async () => {
-            const action = String(formData.get("action"));
-            if (action === "publish") await publishPolicyChange(formData);
-            else await reviewPolicyChange(formData);
+            await reviewPolicyChangeAction(formData);
           })
         }
         className="mt-4 space-y-4"
       >
-        <input type="hidden" name="change_id" value={changeId} />
+        <input type="hidden" name="policyChangeId" value={changeId} />
         <label className="block text-sm font-medium text-slate-700" htmlFor="summary">
           Summary before publishing
         </label>
@@ -41,7 +39,7 @@ export function AdminReviewActions({ changeId, defaultSummary }: Props) {
           <button
             disabled={pending}
             name="action"
-            value="publish"
+            value="published"
             className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2 text-sm font-semibold text-white"
           >
             <CheckCircle className="h-4 w-4" /> Publish

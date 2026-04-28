@@ -5,7 +5,7 @@ import { createPolicyDocumentAction } from "@/lib/actions/admin";
 import { DOCUMENT_TYPES, SCAN_FREQUENCIES } from "@/lib/constants";
 
 export function AdminPolicyDocumentForm({ serviceId }: { serviceId: string }) {
-  const [state, action, pending] = useActionState(createPolicyDocumentAction, null);
+  const [state, action, pending] = useActionState(createPolicyDocumentAction, { ok: false, message: "" });
   return (
     <form action={action} className="grid gap-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
       <input type="hidden" name="serviceId" value={serviceId} />

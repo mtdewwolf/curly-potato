@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import {
   changeAnalysisPrompt,
-  fullRiskReportPrompt,
+  buildFullRiskReportPrompt,
   repairJsonPrompt,
 } from "@/lib/ai/prompts";
 import {
@@ -84,7 +84,7 @@ export async function generateRiskReportAnalysis(input: {
   policyText: string;
 }): Promise<ValidatedResult<AiRiskReport>> {
   const raw = await completeJson(
-    fullRiskReportPrompt({
+    buildFullRiskReportPrompt({
       companyName: input.companyName,
       documentType: input.documentType,
       policyText: input.policyText,
@@ -93,6 +93,8 @@ export async function generateRiskReportAnalysis(input: {
 
   return validateWithRepair(raw, aiRiskReportSchema);
 }
+
+export const generateRiskReport = generateRiskReportAnalysis;
 
 export async function analyzePolicyChange(input: {
   companyName: string;

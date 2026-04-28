@@ -91,3 +91,8 @@ export const PolicyChangeAnalysisSchema = z
 
 export type FullRiskReport = z.infer<typeof FullRiskReportSchema>;
 export type PolicyChangeAnalysis = z.infer<typeof PolicyChangeAnalysisSchema>;
+export const aiRiskReportSchema = FullRiskReportSchema;
+export const aiPolicyChangeAnalysisSchema = PolicyChangeAnalysisSchema;
+export type AiRiskReport = FullRiskReport;
+export type AiPolicyChangeAnalysis = PolicyChangeAnalysis;
+export type RiskReportAnalysis = FullRiskReport;

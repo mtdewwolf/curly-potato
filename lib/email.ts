@@ -29,3 +29,5 @@ export async function sendPolicyAlertEmail({
     text: `${serviceName} updated its ${documentType}.\n\nRisk impact: ${riskLevel}\n\nWhat changed:\n${summary}\n\nView full report:\n${reportUrl}`,
   });
 }
+
+export const sendPolicyChangeEmail = sendPolicyAlertEmail;

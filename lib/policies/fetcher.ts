@@ -83,6 +83,8 @@ export async function fetchPolicyDocument(url: string): Promise<FetchPolicyResul
   }
 }
 
+export const fetchPolicyText = fetchPolicyDocument;
+
 function extractReadablePolicyText(
   body: string,
   url: string,

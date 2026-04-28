@@ -79,6 +79,10 @@ export async function createSuggestion(formData: FormData) {
   redirect("/dashboard");
 }
 
+export async function createSuggestionAction(_: unknown, formData: FormData) {
+  return createSuggestion(formData);
+}
+
 export async function followService(serviceId: string, serviceSlug: string) {
   const { profile } = await getCurrentUser();
   if (!profile) redirect("/auth/sign-in");
@@ -97,9 +101,22 @@ export async function unfollowService(serviceId: string, serviceSlug: string) {
   revalidatePath(`/service/${serviceSlug}`);
 }
 
-export async function markNotificationRead(notificationId: string) {
+export async function toggleFollowService(serviceId: string, isFollowing: boolean, serviceSlug = "") {
+  if (isFollowing) {
+    await unfollowService(serviceId, serviceSlug);
+  } else {
+    await followService(serviceId, serviceSlug);
+  }
+}
+
+export async function toggleFollowServiceForm(formData: FormData) {
+  await toggleFollowService(String(formData.get("serviceId")), formData.get("isFollowing") === "true", String(formData.get("serviceSlug") ?? ""));
+}
+
+export async function markNotificationRead(formData: FormData) {
   const { profile } = await getCurrentUser();
   if (!profile) redirect("/auth/sign-in");
+  const notificationId = String(formData.get("notificationId"));
   const supabase = await createClient();
   const { error } = await supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("id", notificationId).eq("user_id", profile.id);
   if (error) throw new Error(error.message);

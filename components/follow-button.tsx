@@ -2,15 +2,16 @@
 
 import { Bell, BellOff } from "lucide-react";
 import { useTransition } from "react";
-import { toggleFollowService } from "@/lib/actions/user";
+import { followService, unfollowService } from "@/lib/actions/user";
 
 type FollowButtonProps = {
   serviceId: string;
+  serviceSlug: string;
   isFollowing: boolean;
   isLoggedIn: boolean;
 };
 
-export function FollowButton({ serviceId, isFollowing, isLoggedIn }: FollowButtonProps) {
+export function FollowButton({ serviceId, serviceSlug, isFollowing, isLoggedIn }: FollowButtonProps) {
   const [pending, startTransition] = useTransition();
 
   if (!isLoggedIn) {
@@ -25,7 +26,11 @@ export function FollowButton({ serviceId, isFollowing, isLoggedIn }: FollowButto
     <button
       className={isFollowing ? "btn btn-secondary" : "btn btn-primary"}
       disabled={pending}
-      onClick={() => startTransition(() => void toggleFollowService(serviceId, isFollowing))}
+      onClick={() =>
+        startTransition(() =>
+          void (isFollowing ? unfollowService(serviceId, serviceSlug) : followService(serviceId, serviceSlug)),
+        )
+      }
     >
       {isFollowing ? <BellOff size={16} /> : <Bell size={16} />}
       {pending ? "Saving..." : isFollowing ? "Following" : "Follow updates"}
